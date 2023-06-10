@@ -1,24 +1,24 @@
 import seaborn as sns
-from sympy.plotting import plot
+import sympy
+from varname import argname
 
 
 sns.set()
 sns.set_style("whitegrid", {'grid.linestyle': '--'})
 
 
-def plot_g(exp, xlim, ylim):
-    print('G(U):')
+def plot(exp, xlim, ylim):
+    type = argname('exp')
+    if type in ('G', 'g', 'Y'):
+        units = 'S'
+    elif type in ('R', 'r', 'Z'):
+        units = r'$\Omega$'
+    elif type in ('I', 'i'):
+        units = 'A'
+    else:
+        return
+
+    print(f'{type}(U):')
     display(exp)
-    plot(exp, title='G, S', xlabel='U, V', ylabel='', xlim=xlim, ylim=ylim)
 
-
-def plot_r(exp, xlim, ylim):
-    print('R(U):')
-    display(exp)
-    plot(exp, title=r'R, $\Omega$', xlabel='U, V', ylabel='', xlim=xlim, ylim=ylim)
-
-
-def plot_i(exp, xlim, ylim):
-    print('I(U):')
-    display(exp)
-    plot(exp, title='I, A', xlabel='U, V', ylabel='', xlim=xlim, ylim=ylim)
+    sympy.plot(exp, title=f'{type}, {units}', xlabel='U, V', ylabel='', xlim=xlim, ylim=ylim)

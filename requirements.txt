@@ -1,0 +1,3 @@
+seaborn>=0.12.2
+sympy>=1.12
+varname>=0.11.1
