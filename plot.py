@@ -10,15 +10,15 @@ sns.set_style("whitegrid", {'grid.linestyle': '--'})
 def plot(exp, xlim, ylim):
     type = argname('exp')
     if type in ('G', 'g', 'Y'):
-        units = 'S'
+        units = 'См'
     elif type in ('R', 'r', 'Z'):
-        units = r'$\Omega$'
+        units = 'Ом'
     elif type in ('I', 'i'):
-        units = 'A'
+        units = 'А'
     else:
         return
 
-    print(f'{type}(U):')
+    print(f'{type}(U) =')
     display(exp)
 
-    sympy.plot(exp, title=f'{type}, {units}', xlabel='U, V', ylabel='', xlim=xlim, ylim=ylim)
+    sympy.plot(exp, title=f'{type}, {units}', xlabel='U, В', ylabel='', xlim=xlim, ylim=ylim)
