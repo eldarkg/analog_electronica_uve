@@ -1,10 +1,16 @@
 import seaborn as sns
 import sympy
 from varname import argname
+from IPython.display import display, Latex
 
 
 sns.set()
 sns.set_style("whitegrid", {'grid.linestyle': '--'})
+
+
+def disp(exp):
+    type = argname('exp')
+    display(Latex(f'${type}({exp.free_symbols}) =$'), exp)
 
 
 def plot(exp, xlim, ylim):
@@ -18,7 +24,6 @@ def plot(exp, xlim, ylim):
     else:
         return
 
-    print(f'{type}(U) =')
-    display(exp)
+    display(Latex(f'${type}({exp.free_symbols}) =$'), exp)
 
     sympy.plot(exp, title=f'{type}, {units}', xlabel='U, В', ylabel='', xlim=xlim, ylim=ylim)
