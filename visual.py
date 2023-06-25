@@ -8,12 +8,30 @@ sns.set()
 sns.set_style("whitegrid", {'grid.linestyle': '--'})
 
 
+def __ref_to_units(ref):
+    type = ref[0].upper()
+    if type in ('G', 'Y'):
+        return 'См'
+    elif type in ('R', 'Z'):
+        return 'Ом'
+    elif type == 'I':
+        return 'А'
+    elif type == 'U':
+        return 'В'
+    else:
+        return ''
+
+
 def disp(exp):
-    type = argname('exp')
-    display(Latex(f'${type}({exp.free_symbols}) =$'), exp)
+    ref = argname('exp')
+    if exp.free_symbols:
+        params = f'({exp.free_symbols})'
+    else:
+        params = ''
+    display(Latex(f'${ref}{params} = {sympy.latex(exp)}, {__ref_to_units(ref)}$'))
 
 
-def plot(exp, xlim, ylim):
+def plot(exp, xrange):
     type = argname('exp')
     if type in ('G', 'g', 'Y'):
         units = 'См'
@@ -24,6 +42,5 @@ def plot(exp, xlim, ylim):
     else:
         return
 
-    display(Latex(f'${type}({exp.free_symbols}) =$'), exp)
-
-    sympy.plot(exp, title=f'{type}, {units}', xlabel='U, В', ylabel='', xlim=xlim, ylim=ylim)
+    #sympy.plot(exp, xrange, ylabel=f'{type}, {units}', xlabel='U, В')
+    sympy.plot(exp, xrange, title=f'{type}, {units}', xlabel='U, В', ylabel='')
