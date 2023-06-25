@@ -24,11 +24,7 @@ def __ref_to_units(ref):
 
 def disp(exp):
     ref = argname('exp')
-    if exp.free_symbols:
-        params = f'({exp.free_symbols})'
-    else:
-        params = ''
-    display(Latex(f'${ref}{params} = {sympy.latex(exp)}, {__ref_to_units(ref)}$'))
+    display(Latex(f'${ref} = {sympy.latex(exp)}, {__ref_to_units(ref)}$'))
 
 
 def plot(exp, xrange):
@@ -42,5 +38,4 @@ def plot(exp, xrange):
     else:
         return
 
-    #sympy.plot(exp, xrange, ylabel=f'{type}, {units}', xlabel='U, В')
     sympy.plot(exp, xrange, title=f'{type}, {units}', xlabel='U, В', ylabel='')
