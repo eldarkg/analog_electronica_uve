@@ -1,4 +1,5 @@
 pandas>=1.5.3
+ipympl>=0.9.3
 seaborn>=0.12.2
 sympy>=1.12
 varname>=0.11.1
