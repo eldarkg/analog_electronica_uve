@@ -27,7 +27,7 @@ def disp(exp):
     display(Latex(f'${ref} = {sympy.latex(exp)}, {__ref_to_units(ref)}$'))
 
 
-def plot(exp, xrange):
+def plot(exp, xrange, nb_of_points=None):
     type = argname('exp')
     if type in ('G', 'g', 'Y'):
         units = 'См'
@@ -38,4 +38,5 @@ def plot(exp, xrange):
     else:
         return
 
-    sympy.plot(exp, xrange, title=f'{type}, {units}', xlabel='U, В', ylabel='')
+    adaptive = nb_of_points is None
+    sympy.plot(exp, xrange, title=f'{type}, {units}', xlabel='U, В', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)
