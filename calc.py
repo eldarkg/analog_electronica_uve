@@ -38,3 +38,15 @@ def harmonics(exp, n, limits):
         coeffs.append(A)
 
     return coeffs
+
+
+def effective(harmonics):
+    eff = 0
+    for h in harmonics:
+        eff += (h / sympy.sqrt(2)) ** 2
+
+    return sympy.sqrt(eff)
+
+
+def distortion_coeff(eff1, eff):
+    return sympy.sqrt(1 - (eff1 / eff) ** 2)
