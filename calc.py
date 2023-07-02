@@ -1,6 +1,7 @@
 import pandas as pd
 import sympy
 
+#TODO add SI. Implement from book
 def op(I, I0, U0, UA0, eps):
     U = next(iter(I.free_symbols))
     Gi = I0 / U0
