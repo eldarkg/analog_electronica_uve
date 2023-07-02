@@ -23,3 +23,18 @@ def op(I, I0, U0, UA0, eps):
             break
 
     return df
+
+
+def harmonics(exp, n, limits):
+    fs = sympy.fourier_series(exp, limits=limits)
+
+    t = limits[0]
+
+    coeffs = [fs.a0]
+    for i in range(1, n + 1):
+        a = fs.an.coeff(i).subs(t, 0)
+        b = fs.bn.coeff(i).subs(t, 1 / (4 * i))
+        A = sympy.sqrt(a ** 2 + b ** 2)
+        coeffs.append(A)
+
+    return coeffs
