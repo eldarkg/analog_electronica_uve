@@ -1,3 +1,5 @@
+import copy
+
 from collections.abc import Iterable
 import seaborn as sns
 import sympy
@@ -38,31 +40,76 @@ def __units_prefix_to_mul(units):
         return 1
 
 
+def __latex_ref(ref):
+    latex = ''
+    outter = True
+    for c in ref:
+        if c == '_':
+            if outter:
+                latex += c
+                latex += '{'
+                outter = False
+            else:
+                latex += '}'
+                latex += c
+                latex += '{'
+        else:
+            latex += c
+
+    if not outter:
+        latex += '}'
+
+    return latex
+
+
 def disp(exp, si=False):
     ref = argname('exp')
+    expc = copy.deepcopy(exp)
 
     units = __ref_to_units(ref, si)
     if units:
         mul = __units_prefix_to_mul(units)
-        if isinstance(exp, Iterable):
-            for i in range(len(exp)):
-                exp[i] *= mul
+        if isinstance(expc, Iterable):
+            for i in range(len(expc)):
+                expc[i] *= mul
         else:
-            exp *= mul
+            expc *= mul
 
         if units == '%':
             units = '\%'
 
-    display(Latex(f'${ref} = {sympy.latex(exp)}, {units}$'))
+    latex_ref = __latex_ref(ref)
+
+    display(Latex(f'${latex_ref} = {sympy.latex(expc)}, {units}$'))
 
 
 def plot(exp, xrange, nb_of_points=None, si=False):
     ref = argname('exp')
+    expc = copy.deepcopy(exp)
 
     units = __ref_to_units(ref, si)
     if units:
         mul = __units_prefix_to_mul(units)
-        exp *= mul
+        expc *= mul
+
+    latex_ref = __latex_ref(ref)
 
     adaptive = nb_of_points is None
-    sympy.plot(exp, xrange, title=f'{ref}, {units}', xlabel='U, В', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)
+    #FIXME check xrange unit. Implement time unit.
+    sympy.plot(expc, xrange, title=f'${latex_ref}, {units}$', xlabel='$U, В$', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)
+
+
+def plot_harmonics(harmonics, xrange, freq=1.0, nb_of_points=None, si=False):
+    ref = argname('harmonics')
+
+    units = __ref_to_units(ref, si)
+    mul = __units_prefix_to_mul(units) if units else 1.0
+
+    t = xrange[0]
+    exprs = [harmonics[0] * mul]
+    for i in range(1, len(harmonics)):
+        #FIXME use phase
+        exprs.append(harmonics[i] * mul * sympy.sin(2 * sympy.pi * i * freq * t))
+
+    adaptive = nb_of_points is None
+    sympy.plot(*exprs, xrange, title=f'${ref}, {units}$', xlabel='$t, с$', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)

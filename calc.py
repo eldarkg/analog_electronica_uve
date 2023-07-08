@@ -26,6 +26,7 @@ def op(I, I0, U0, UA0, eps):
     return df
 
 
+#FIXME use phase
 def harmonics(exp, n, limits):
     fs = sympy.fourier_series(exp, limits=limits)
 
@@ -33,8 +34,13 @@ def harmonics(exp, n, limits):
 
     coeffs = [fs.a0]
     for i in range(1, n + 1):
-        a = fs.an.coeff(i).subs(t, 0)
-        b = fs.bn.coeff(i).subs(t, 1 / (4 * i))
+        if type(fs.an) is sympy.Dict:
+            a = fs.an[i] if i in fs.an else 0
+            b = fs.bn[i] if i in fs.bn else 0
+        else:
+            a = fs.an.coeff(i).subs(t, 0)
+            b = fs.bn.coeff(i).subs(t, 1 / (4 * i))
+
         A = sympy.sqrt(a ** 2 + b ** 2)
         coeffs.append(A)
 
