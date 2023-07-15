@@ -12,17 +12,21 @@ sns.set_style("whitegrid", {'grid.linestyle': '--'})
 
 
 def __ref_to_units(ref, si):
-    type = ref[0].upper()
-    if type in ('G', 'Y'):
+    type = ref[0]
+    if type.upper() in ('G', 'Y'):
         return 'См' if si else 'мСм'
-    elif type in ('R', 'Z'):
+    elif type.upper() in ('R', 'Z'):
         return 'Ом' if si else 'кОм'
-    elif type == 'I':
+    elif type.upper() == 'I':
         return 'А' if si else 'мА'
-    elif type == 'U':
+    elif type.upper() == 'U':
         return 'В'
-    elif type == 'K':
+    elif type.upper() == 'K':
         return '' if si else '%'
+    elif type == 't':
+        return 'с' if si else 'мс'
+    elif type == 'T':
+        return 'К' if si else '\degree{C}' #TODO test
     else:
         return ''
 
@@ -85,6 +89,8 @@ def disp(exp, si=False):
 
 def plot(exp, xrange, nb_of_points=None, si=False):
     ref = argname('exp')
+    xref = str(xrange[0])
+
     expc = copy.deepcopy(exp)
 
     units = __ref_to_units(ref, si)
@@ -92,11 +98,13 @@ def plot(exp, xrange, nb_of_points=None, si=False):
         mul = __units_prefix_to_mul(units)
         expc *= mul
 
+    xunits = __ref_to_units(xref, si=True)
+
     latex_ref = __latex_ref(ref)
+    xlatex_ref = __latex_ref(xref)
 
     adaptive = nb_of_points is None
-    #FIXME check xrange unit. Implement time unit.
-    sympy.plot(expc, xrange, title=f'${latex_ref}, {units}$', xlabel='$U, В$', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)
+    sympy.plot(expc, xrange, title=f'${latex_ref}, {units}$', xlabel=f'${xlatex_ref}, {xunits}$', ylabel='', adaptive=adaptive, nb_of_points=nb_of_points)
 
 
 def plot_harmonics(mags, phases, xrange, freq=1.0, nb_of_points=None, si=False):
