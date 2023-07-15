@@ -11,7 +11,7 @@
 .csparam nf = order+1
 
 Vin 0 out DC {U_A} AC {u} SIN({U_A} {u} {f}) DISTOF1 {u}
-Bload out 0 i={(v(out)/C)^(1/betta)
+Bload out 0 i={(v(out)/C)^(1/betta)}
 
 .control
 tran 1m 1s
