@@ -1,0 +1,41 @@
+.title 1.1.5.2
+.probe alli
+
+.param C = 120VA
+.param betta = 0.16
+.param U_A = 100V
+.param u = 20V
+.param f = 1Hz
+.param order = 4
+.csparam f = f
+.csparam nf = order+1
+
+Vin 0 out DC {U_A} AC {u} SIN({U_A} {u} {f}) DISTOF1 {u}
+Bload out 0 i={(v(out)/C)^(1/betta)
+
+.control
+tran 1m 1s
+plot i(Bload)
+
+set nfreqs = $&nf
+fourier $&f i(Bload)
+let freqs = fourier11[0]
+let ih = fourier11[1]
+settype frequency freqs
+settype current ih
+
+set plotstyle = combplot
+plot ih vs freqs
+
+*FIXME
+*reset
+*disto lin 5 1Hz 5Hz
+*display
+*print disto1.i(Bload)
+*print disto2.i(Bload)
+*
+*set plotstyle
+*setplot disto1
+*plot disto1.i(Bload)
+.endc
+.end
