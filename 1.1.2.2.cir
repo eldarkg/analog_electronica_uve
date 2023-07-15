@@ -1,15 +1,21 @@
 .title 1.1.2.2
 .probe alli
 
-I0 0 out dc 5mA
-Ri out 0 {1/2.5m}
-R out 0 {1/(5e-4*(4-V(out)))}
+.param a0 = 5e-4
+.param a1 = 4
+.param I0 = 5mA
+.param Gi = 2.5mS
+
+I 0 out dc I0
+Ri out 0 {1/Gi}
+R out 0 {1/(a0*(a1-v(out)))}
 
 .control
 op
 print all
-let U_A = V(out)
-let I_A = I(R)
+let U_A = v(out)
+let I_A = i(R)
 print U_A, I_A
+quit
 .endc
 .end
