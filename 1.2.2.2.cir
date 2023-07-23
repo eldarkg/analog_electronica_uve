@@ -1,0 +1,19 @@
+.title 1.2.2.2
+.model diode D (is=50fA n=1.2 rs=3.5)
+
+.probe alli
+
+R1 1 0 30
+R2 1 U2 30
+D U2 0 diode temp=25
+I1 0 1 150mA
+
+.control
+op
+print all
+let U2 = v(U2)
+let I2 = i(D)
+print U2, I2
+quit
+.endc
+.end
