@@ -13,7 +13,11 @@ sns.set_style("whitegrid", {'grid.linestyle': '--'})
 
 def __ref_to_units(ref, si):
     type = ref[0]
-    if type.upper() in ('G', 'Y'):
+    if ref == 'd_T':
+        return 'В/К' if si else 'мВ/К'
+    elif ref == 'lambda_T':
+        return '1/К'
+    elif type.upper() in ('G', 'Y'):
         return 'См' if si else 'мСм'
     elif type.upper() in ('R', 'Z'):
         return 'Ом' if si else 'кОм'
@@ -62,6 +66,8 @@ def __latex_ref(ref):
 
     if not outter:
         latex += '}'
+
+    latex = latex.replace('lambda', '\lambda')
 
     return latex
 
