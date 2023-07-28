@@ -1,0 +1,22 @@
+.title 1.2.9
+.model diode D (is=40f n=1.7)
+
+V0 1 0 2
+RV 1 2 176
+D1 2 0 diode
+CS 2 3 100n
+VS 3 0 AC 100m SIN(0 100m 10k)
+
+.control
+op
+print all
+
+tran 1us 200us
+plot v(3)
+plot v(2)
+
+ac dec 10 10 100k
+plot vdb(2) xlog
+plot 180/PI*phase(v(2)) xlog
+.endc
+.end
