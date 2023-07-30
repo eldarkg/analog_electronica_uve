@@ -1,0 +1,28 @@
+.title 1.3.1.3
+
+VIN in 0 PWL(0 -10 1 0)
+XCj in 0 varactor
+
+
+.subckt varactor p n
+.param C0=80p
+.param UD=0.7
+
+B 1 0 v={-2*UD*sqrt(1-v(p,n)/UD)}
+C0 1 0 {C0}
+F p n B -1
+.ends
+
+
+.control
+op
+print all
+
+tran 10m 1 0 10m
+
+let Cj=-i(vin)/deriv(v(in))
+settype capacitance Cj
+
+plot Cj vs v(in)
+.endc
+.end
